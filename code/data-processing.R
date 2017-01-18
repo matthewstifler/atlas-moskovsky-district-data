@@ -1,10 +1,12 @@
 require(dplyr)
 require(stringr)
 
+start <- Sys.time()
+
 #loading
 #NOTE:
-ideas.web.raw <- read.delim("data/web-ideas-18.01.tsv", stringsAsFactors = F)
-ideas.field.raw <- read.csv("data/field-ideas-18.01.csv", 
+ideas.web.raw <- read.delim(paste0("data/input/", list.files("data/input")[2]), stringsAsFactors = F)
+ideas.field.raw <- read.csv(paste0("data/input/", list.files("data/input")[1]), 
                             stringsAsFactors = F,
                             header = T,
                             allowEscapes = T, # line breaks are not parsed as separate observations
@@ -32,5 +34,7 @@ ideas$suggestion <- system("mystem -cl -d data/ideas-vec | cat", intern = T) %>%
   trimws()
 
 #monitoring
-ideas$suggestion %>% strsplit(" ") %>% sapply(length) %>% sum
-ideas$suggestion %>% strsplit(" ") %>% sapply(length) %>% mean
+cat("Number of words in corpus:\n", ideas$suggestion %>% strsplit(" ") %>% sapply(length) %>% sum, "\n")
+cat("Average number of words in a document:\n", ideas$suggestion %>% strsplit(" ") %>% sapply(length) %>% mean, "\n")
+cat("Script finished in ", Sys.time() - start %>% as.numeric(), " seconds")
+rm(start)
