@@ -27,7 +27,7 @@ ideas$suggestion <- gsub("(https://)(\\S*)", " ", ideas$suggestion) %>%
 
 #stemming
 writeLines(ideas$suggestion, "data/ideas-vec")
-ideas$suggestion <- system("mystem -cl -d data/ideas-vec | cat", intern = T) %>% 
+ideas.stemmed <- system("mystem -cl -d data/ideas-vec | cat", intern = T) %>% 
   #TODO: Get rid of mediate file (ideas-vec)
   gsub("[^А-Яа-я]", " ", .) %>% 
   gsub("\\s{2,}", " ", .) %>% 
